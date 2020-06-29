@@ -7,32 +7,46 @@ import (
 
 func TestEndsWithSlash(t *testing.T) {
 
-	// Define some vars
-	string1 := "/home/user/"
-	string2 := "/usr/bin"
+	t.Run("return equal string if ends with a slash", func(t *testing.T) {
+		// Define some vars
+		var str string = "/home/user/"
+		// fire up
+		result := EndsWithSlash(str)
+		// if result equals to expected?
+		assert.Equal(t, str, result)
+	})
 
-	// fire up
-	result1 := EndsWithSlash(string1)
-	result2 := EndsWithSlash(string2)
-
-	// if result equals to expected?
-	assert.Equal(t, string1, result1)
-	assert.Equal(t, "/usr/bin/", result2)
+	t.Run("return a string with a slash at end", func(t *testing.T) {
+		// Define some vars
+		var str string = "/home/user"
+		var expected string = str + "/"
+		// fire up
+		result := EndsWithSlash(str)
+		// if result equals to expected?
+		assert.Equal(t, expected, result)
+	})
 }
 
 func TestDelInitialSlash(t *testing.T) {
 
-	// Define some vars
-	string1 := "/home/user/"
-	string2 := "usr/bin/"
+	t.Run("return equal string if first char is not slash", func(t *testing.T) {
+		// Define some vars
+		var str string = "home/user/"
+		// fire up
+		result := DelInitialSlash(str)
+		// if result equals to expected?
+		assert.Equal(t, str, result)
+	})
 
-	// fire up
-	result1 := EndsWithSlash(string1)
-	result2 := EndsWithSlash(string2)
-
-	// if result equals to expected?
-	assert.Equal(t, string1, result1)
-	assert.Equal(t, "usr/bin/", result2)
+	t.Run("return a string without a slash at first char", func(t *testing.T) {
+		// Define some vars
+		var str string = "/home/user/"
+		var expected string = str[1:]
+		// fire up
+		result := DelInitialSlash(str)
+		// if result equals to expected?
+		assert.Equal(t, expected, result)
+	})
 }
 
 func TestValidFileName(t *testing.T) {

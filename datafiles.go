@@ -2,16 +2,14 @@ package utilities
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"strings"
 )
 
-// WriteDataToJson saves the content of body in a JSON format file
-func WriteDataToJson(body interface{}, fileName string) error {
+// WriteDataToJSON saves the content of body in a JSON format file
+func WriteDataToJSON(body interface{}, fileName string) error {
 
 	if !strings.HasSuffix(fileName, ".json") {
 		fileName += ".json"
@@ -35,14 +33,14 @@ func WriteDataToJson(body interface{}, fileName string) error {
 	return nil
 }
 
-// LoadDataFromJson reads a JSON format file and returns its contents on body
-func LoadDataFromJson(body interface{}, fileName string) error {
+// LoadDataFromJSON reads a JSON format file and returns its contents on body
+func LoadDataFromJSON(body interface{}, fileName string) error {
 
 	return json.Unmarshal(ReadFile(fileName), body)
 }
 
-// WriteDataToYaml saves the content of body in a YAML format file
-func WriteDataToYaml(body interface{}, fileName string) error {
+// WriteDataToYAML saves the content of body in a YAML format file
+func WriteDataToYAML(body interface{}, fileName string) error {
 
 	if !strings.HasSuffix(fileName, ".yaml") {
 		fileName += ".yaml"
@@ -66,23 +64,20 @@ func WriteDataToYaml(body interface{}, fileName string) error {
 	return nil
 }
 
-// LoadDataFromYaml reads a YAML format file and returns its contents on body
-func LoadDataFromYaml(body interface{}, fileName string) error {
+// LoadDataFromYAML reads a YAML format file and returns its contents on body
+func LoadDataFromYAML(body interface{}, fileName string) error {
 
 	return yaml.Unmarshal(ReadFile(fileName), body)
 }
 
-// ReadFile reads a file an returns its conte
+// ReadFile reads a file an returns its content if exists, on the other hand nil
 func ReadFile(fileName string) []byte {
 
-	if _, err := os.Stat(fileName); os.IsNotExist(err) {
-		panic(errors.New(fmt.Sprintf("%s don't exist, aborting.\n", fileName)))
-	} else {
+	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
 		file, err := ioutil.ReadFile(fileName)
-		if err != nil {
-			panic(err)
+		if err == nil {
+			return file
 		}
-		return file
 	}
 	return nil
 }

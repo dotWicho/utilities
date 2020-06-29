@@ -12,7 +12,7 @@ type UserInfo struct {
 	Age  int    `json:"age" yaml:"age"`
 }
 
-func TestWriteDataToJson(t *testing.T) {
+func TestWriteDataToJSON(t *testing.T) {
 
 	// Define our data to work
 	fileName := "example.json"
@@ -20,7 +20,7 @@ func TestWriteDataToJson(t *testing.T) {
 	expected := []byte{0x7b, 0xa, 0x20, 0x20, 0x22, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x3a, 0x20, 0x22, 0x4a, 0x6f, 0x6e, 0x61, 0x68, 0x20, 0x44, 0x6f, 0x65, 0x22, 0x2c, 0xa, 0x20, 0x20, 0x22, 0x61, 0x67, 0x65, 0x22, 0x3a, 0x20, 0x34, 0x35, 0xa, 0x7d}
 
 	// fire up
-	writeErr := WriteDataToJson(User, fileName)
+	writeErr := WriteDataToJSON(User, fileName)
 	defer os.Remove(fileName)
 
 	// if ok?
@@ -36,7 +36,7 @@ func TestWriteDataToJson(t *testing.T) {
 	assert.Equal(t, expected, file)
 }
 
-func TestWriteDataToYaml(t *testing.T) {
+func TestWriteDataToYAML(t *testing.T) {
 
 	// Define our data to work
 	fileName := "example.yaml"
@@ -44,7 +44,7 @@ func TestWriteDataToYaml(t *testing.T) {
 	expected := []byte{0x6e, 0x61, 0x6d, 0x65, 0x3a, 0x20, 0x4a, 0x6f, 0x6e, 0x61, 0x68, 0x20, 0x44, 0x6f, 0x65, 0xa, 0x61, 0x67, 0x65, 0x3a, 0x20, 0x34, 0x35, 0xa}
 
 	// fire ups
-	writeErr := WriteDataToYaml(User, fileName)
+	writeErr := WriteDataToYAML(User, fileName)
 	defer os.Remove(fileName)
 
 	// if ok?
@@ -60,7 +60,7 @@ func TestWriteDataToYaml(t *testing.T) {
 	assert.Equal(t, expected, file)
 }
 
-func TestLoadDataFromJson(t *testing.T) {
+func TestLoadDataFromJSON(t *testing.T) {
 
 	// Define our data to work
 	fileName := "example.json"
@@ -74,7 +74,7 @@ func TestLoadDataFromJson(t *testing.T) {
 	assert.Nil(t, err)
 
 	// fire up
-	readError := LoadDataFromJson(UserReaded, fileName)
+	readError := LoadDataFromJSON(UserReaded, fileName)
 	defer os.Remove(fileName)
 
 	//
@@ -85,7 +85,7 @@ func TestLoadDataFromJson(t *testing.T) {
 	assert.Equal(t, 45, UserReaded.Age)
 }
 
-func TestLoadDataFromYaml(t *testing.T) {
+func TestLoadDataFromYAML(t *testing.T) {
 
 	// Define our data to work
 	fileName := "example.yaml"
@@ -99,7 +99,7 @@ func TestLoadDataFromYaml(t *testing.T) {
 	assert.Nil(t, err)
 
 	// fire up
-	readError := LoadDataFromYaml(UserReaded, fileName)
+	readError := LoadDataFromYAML(UserReaded, fileName)
 	defer os.Remove(fileName)
 
 	//
