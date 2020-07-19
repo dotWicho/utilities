@@ -15,10 +15,7 @@ func WriteDataToJSON(body interface{}, fileName string) error {
 		fileName += ".json"
 	}
 
-	file, err := json.MarshalIndent(body, "", "  ")
-	if err != nil {
-		return err
-	}
+	file, _ := json.MarshalIndent(body, "", "  ")
 
 	jsonFile, err := os.Create(fileName)
 	if err != nil {

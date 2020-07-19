@@ -34,9 +34,8 @@ func DelInitialSlash(path string) string {
 
 // Name makes a string safe to use in a file name by first finding the path basename, then replacing non-ascii characters.
 func Name(str string) string {
-	// Start with lowercase string
-	fileName := strings.ToLower(str)
-	fileName = path.Clean(path.Base(fileName))
+	// Start with a Clean Base
+	fileName := path.Clean(path.Base(str))
 	// Remove illegal characters for names, replacing some common separators with -
 	fileName = CleanString(fileName, illegalName)
 	// NB this may be of length 0, caller must check
@@ -71,12 +70,12 @@ func BaseName(str string) string {
 
 // FileNameISO8601 returns a valid fileName with ISO8606 timestamp on it
 func FileNameISO8601(fileName string) string {
-	//
+	// Stats with a clean base fileName
 	fileName = Name(fileName)
 	// Get file extension
 	var extension = filepath.Ext(fileName)
 	// Strip file extension
-	var name = fileName[0 : len(fileName)-len(extension)]
+	var name = FilenameWithoutExtension(fileName)
 	// Return name + Separator + ISO8601 Timestamp + extension
 	return BaseName(name+"_"+time.Now().Format(time.RFC3339)) + extension
 }
@@ -85,4 +84,9 @@ func FileNameISO8601(fileName string) string {
 func ValidFileName(folderName, fileName string) string {
 
 	return path.Join(folderName, Name(DelInitialSlash(fileName)))
+}
+
+// FilenameWithoutExtension returns a valid fileName without extension
+func FilenameWithoutExtension(fileName string) string {
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
