@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -22,7 +23,7 @@ func TestWriteDataToJSON(t *testing.T) {
 
 		// fire up
 		writeErr := WriteDataToJSON(User, fileName)
-		defer os.Remove(fileName + ".json")
+		defer func() { _ = os.Remove(fileName + ".json") }()
 
 		// if ok?
 		assert.Nil(t, writeErr)
@@ -45,7 +46,7 @@ func TestWriteDataToJSON(t *testing.T) {
 
 		// fire up
 		writeErr := WriteDataToJSON(User, fileName)
-		defer os.Remove(fileName)
+		defer func() { _ = os.Remove(fileName) }()
 
 		// if ok?
 		assert.Nil(t, writeErr)
@@ -71,7 +72,7 @@ func TestWriteDataToYAML(t *testing.T) {
 
 		// fire ups
 		writeErr := WriteDataToYAML(User, fileName)
-		defer os.Remove(fileName + ".yaml")
+		defer func() { _ = os.Remove(fileName + ".yaml") }()
 
 		// if ok?
 		assert.Nil(t, writeErr)
@@ -94,7 +95,7 @@ func TestWriteDataToYAML(t *testing.T) {
 
 		// fire ups
 		writeErr := WriteDataToYAML(User, fileName)
-		defer os.Remove(fileName)
+		defer func() { _ = os.Remove(fileName) }()
 
 		// if ok?
 		assert.Nil(t, writeErr)
@@ -126,7 +127,7 @@ func TestLoadDataFromJSON(t *testing.T) {
 
 	// fire up
 	readError := LoadDataFromJSON(UserReaded, fileName)
-	defer os.Remove(fileName)
+	defer func() { _ = os.Remove(fileName) }()
 
 	//
 	assert.Nil(t, readError)
@@ -151,7 +152,7 @@ func TestLoadDataFromYAML(t *testing.T) {
 
 	// fire up
 	readError := LoadDataFromYAML(UserReaded, fileName)
-	defer os.Remove(fileName)
+	defer func() { _ = os.Remove(fileName) }()
 
 	//
 	assert.Nil(t, readError)
@@ -175,7 +176,7 @@ func TestReadFile(t *testing.T) {
 
 	// fire up
 	result1 := ReadFile(fileName1)
-	defer os.Remove(fileName1)
+	defer func() { _ = os.Remove(fileName1) }()
 
 	//
 	assert.Equal(t, User1, result1)
@@ -192,8 +193,29 @@ func TestReadFile(t *testing.T) {
 
 	// fire up
 	result2 := ReadFile(fileName2)
-	defer os.Remove(fileName2)
+	defer func() { _ = os.Remove(fileName2) }()
 
 	//
 	assert.Equal(t, User2, result2)
+}
+
+func TestWriteFile(t *testing.T) {
+
+	// Define our data to work
+	fileName := "example.txt"
+	expected := "Simple content to simple test"
+	buffer := strings.NewReader(expected)
+
+	// We create out file to read as string
+	err := WriteFile(buffer, fileName)
+
+	// if not errors?
+	assert.Nil(t, err)
+
+	// fire up
+	result := ReadFile(fileName)
+	defer func() { _ = os.Remove(fileName) }()
+
+	//
+	assert.Equal(t, expected, string(result))
 }

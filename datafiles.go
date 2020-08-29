@@ -3,6 +3,7 @@ package utilities
 import (
 	"encoding/json"
 	"gopkg.in/yaml.v2"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -67,7 +68,7 @@ func LoadDataFromYAML(body interface{}, fileName string) error {
 	return yaml.Unmarshal(ReadFile(fileName), body)
 }
 
-// ReadFile reads a file an returns its content if exists, on the other hand nil
+// ReadFile reads a file and returns its content if exists, on the other hand nil
 func ReadFile(fileName string) []byte {
 
 	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
@@ -76,5 +77,20 @@ func ReadFile(fileName string) []byte {
 			return file
 		}
 	}
+	return nil
+}
+
+// WriteFile writes io.ReadCloser to a file and returns an error if exists
+func WriteFile(body io.Reader, fileName string) error {
+
+	if file, err := os.Create(fileName); err != nil {
+		return err
+	} else {
+		defer func() { _ = file.Close() }()
+		if _, err = io.Copy(file, body); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
