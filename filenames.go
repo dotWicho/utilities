@@ -1,6 +1,7 @@
 package utilities
 
 import (
+	"os"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -89,4 +90,10 @@ func ValidFileName(folderName, fileName string) string {
 // FilenameWithoutExtension returns a valid fileName without extension
 func FilenameWithoutExtension(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
+}
+
+func FileExists(fileName string) bool {
+
+	_, err := os.Stat(fileName)
+	return err == nil || os.IsExist(err)
 }

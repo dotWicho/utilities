@@ -51,6 +51,10 @@ func TestWriteDataToJSON(t *testing.T) {
 		// if ok?
 		assert.Nil(t, writeErr)
 
+		// Check file existence
+		exists := FileExists(fileName)
+		assert.True(t, exists)
+
 		// Read content of file
 		file, err := ioutil.ReadFile(fileName)
 
